@@ -5,11 +5,22 @@ from sklearn import datasets
 from sklearn import svm
 from importer.Import import Importer
 from sklearn import preprocessing
+from sklearn.cross_validation import KFold
 
 
 class Learner:
     def __init__(self):
         pass
+
+    def crossvalidation(self, clf, trainingFeatures, trainingLabels):
+        kf = KFold(trainingLabels.size, n_folds=10)
+        for train, test in kf:
+            trainCLF = clf = svm.SVC(kernel='rbf', C=1)
+
+            X_train, X_test, y_train, y_test = trainingFeatures[train], trainingFeatures[test], trainingLabels[train], trainingLabels[test]
+        scores = cross_validation.cross_val_score(
+            clf, trainingFeatures, trainingLabels, cv=10)
+        print scores
 
     def learn(self):
         importer = Importer()
@@ -20,6 +31,7 @@ class Learner:
 
         validationFeatures = importer.read("../importer/validation.csv")
         validationFeatures = preprocessing.scale(validationFeatures)
+
         #clf = svm.SVC(kernel='rbf',  class_weight={1:5})
         clf = svm.SVC(kernel='linear', C=1)
         scores = cross_validation.cross_val_score(
@@ -28,7 +40,6 @@ class Learner:
         validationResults =  clf.predict(validationFeatures)
         np.savetxt("validationresult.csv", validationResults , delimiter=",")
 
-        print scores
 
 class LearnerTests(unittest.TestCase):
     def testCrossValidation(self):
