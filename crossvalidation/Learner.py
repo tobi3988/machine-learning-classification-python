@@ -21,7 +21,7 @@ class Learner:
         validationFeatures = importer.read("../importer/validation.csv")
         validationFeatures = preprocessing.scale(validationFeatures)
         #clf = svm.SVC(kernel='rbf',  class_weight={1:5})
-        clf = svm.SVC(kernel='rbf', C=1)
+        clf = svm.SVC(kernel='linear', C=1)
         scores = cross_validation.cross_val_score(
         clf, trainingFeatures, trainingLabels, cv=10)
         clf.fit(trainingFeatures, trainingLabels)
