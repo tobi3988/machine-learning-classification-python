@@ -21,6 +21,7 @@ class Learner:
     def slack(self):
         return 10
 
+
     def learn(self):
         importer = Importer()
         trainingData, validationFeatures = self.readData(importer)
@@ -71,6 +72,7 @@ class Learner:
 
     def saveToCSV(self, validationResults):
         np.savetxt("validationresult.csv", validationResults, delimiter=",")
+
 
 
 class LearnerTests(unittest.TestCase):
