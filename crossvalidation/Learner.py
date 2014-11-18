@@ -73,7 +73,6 @@ class Learner:
         np.savetxt("validationresult.csv", validationResults, delimiter=",")
 
 
-
 class LearnerTests(unittest.TestCase):
     def testCrossValidation(self):
         learner = Learner()
