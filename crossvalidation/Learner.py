@@ -16,10 +16,13 @@ class Learner:
         return 'rbf'
 
     def folds(self):
-        return 10
+        return 30
 
     def slack(self):
-        return 10
+        return 1
+
+    def gamma(self):
+        return 0.3
 
     def learn(self):
         importer = Importer()
@@ -31,9 +34,16 @@ class Learner:
         validationResults = self.trainAndPredict(validationFeatures, trainingFeatures, trainingLabels)
         self.saveToCSV(validationResults)
 
+    def createWeights(self, y_train):
+        weights = np.copy(y_train)
+        weights[weights < -0.5] = 5
+        print weights
+        return weights
+
     def trainAndPredict(self, X_test, X_train, y_train):
-        trainCLF = svm.SVC(kernel=self.kernelType(), C=self.slack(), )
-        trainCLF.fit(X_train, y_train)
+        weights = self.createWeights(y_train)
+        trainCLF = svm.SVC(kernel=self.kernelType(), C=self.slack(), gamma=0.5)
+        trainCLF.fit(X_train, y_train, weights)
         y_predict = trainCLF.predict(X_test)
         return y_predict
 
